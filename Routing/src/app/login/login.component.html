@@ -1,0 +1,31 @@
+<!-- <div calss="overlay"></div> -->
+<div class="login-form-container">
+  <div class="login-form">
+    <div class="cancel-button-div">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </div>
+    <h2>Please Login Here</h2>
+    <div class="container">
+      <label for="uname"><b>Username</b></label>
+      <input
+        [(ngModel)]="UserName"
+        type="text"
+        placeholder="Enter Username"
+        required
+      />
+
+      <label for="psw"><b>Password</b></label>
+      <input
+        type="password"
+        [(ngModel)]="Password"
+        placeholder="Enter Password"
+        required
+      />
+
+      <button type="submit" (click)="LogIn()">Login</button>
+      <label>
+        <input type="checkbox" checked="checked" name="remember" /> Remember me
+      </label>
+    </div>
+  </div>
+</div>
