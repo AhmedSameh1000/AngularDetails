@@ -163,3 +163,18 @@ span {
   padding: 5px 5px;
   font-weight: bold;
 }
+.input-container {
+  position: relative;
+  width: 300px; /* Adjust the width as needed */
+  display: block;
+}
+
+/* Position the icon */
+.input-container i {
+  display: block;
+  position: absolute;
+  right: 10px; /* Adjust the right position as needed */
+  top: 40%;
+  transform: translateY(-40%);
+  color: #555; /* Adjust the color as needed */
+}
