@@ -189,12 +189,7 @@
       >Some od Address Field Does not Contain Valid Value</small
     >
     <div class="w-100 d-flex justify-content-center">
-      <input
-        [disabled]="RegisterForm.invalid"
-        type="submit"
-        value="Submit"
-        class="btn btn-danger w-50 mt-3"
-      />
+      <input type="submit" value="Submit" class="btn btn-danger w-50 mt-3" />
     </div>
     <input type="checkbox" name="agree" ngModel [(ngModel)]="IsAgreed" />
     <label for="agree">i agree to terms & condition</label>
