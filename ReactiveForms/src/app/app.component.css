@@ -118,10 +118,6 @@
   box-shadow: rgba(187, 185, 185, 0.35) 0px 5px 15px;
 }
 
-input.ng-invalid.ng-touched {
-  border: red 2px solid;
-}
-
 small {
   color: red;
   font-weight: bold;
@@ -184,20 +180,13 @@ span {
   font-weight: bold;
 }
 
-input.ng-invalid.ng-touched {
-  border: red 2px solid;
-}
-
 input.ng-pending {
   border: yellow 2px solid;
 }
 
-.container.VALID {
-  border: green 3px solid;
-}
-.container.INVALID {
-  border: red 3px solid;
-}
 .container.PENDING {
   border: orange 3px solid;
+}
+.isValidInput {
+  background-color: #e8f0fe !important;
 }

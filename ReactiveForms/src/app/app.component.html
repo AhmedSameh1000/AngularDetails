@@ -12,7 +12,8 @@
           [ngClass]="{
             'is-invalid':
               ReactiveForm.get('FirstName').invalid &&
-              ReactiveForm.get('FirstName').touched
+              ReactiveForm.get('FirstName').touched,
+            isValidInput: ReactiveForm.get('FirstName').valid
           }"
         />
         <small
@@ -23,6 +24,7 @@
           >First Name Required</small
         >
       </div>
+
       <div class="input-box">
         <input
           type="text"
@@ -30,7 +32,8 @@
           [ngClass]="{
             'is-invalid':
               ReactiveForm.get('LastName').invalid &&
-              ReactiveForm.get('LastName').touched
+              ReactiveForm.get('LastName').touched,
+            isValidInput: ReactiveForm.get('LastName').valid
           }"
           placeholder="Last Name"
           formControlName="LastName"
@@ -53,7 +56,8 @@
         [ngClass]="{
           'is-invalid':
             ReactiveForm.get('Email').invalid &&
-            ReactiveForm.get('Email').touched
+            ReactiveForm.get('Email').touched,
+          isValidInput: ReactiveForm.get('Email').valid
         }"
         formControlName="Email"
       />
@@ -75,7 +79,16 @@
     <div class="column">
       <div class="input-box">
         <input type="text" placeholder="username" formControlName="UserName" />
-        <button class="btn-gen-username" type="button">
+        <button
+          class="btn-gen-username"
+          type="button"
+          (click)="GenrateuserName()"
+          *ngIf="
+            ReactiveForm.get('FirstName').valid &&
+            ReactiveForm.get('LastName').valid &&
+            ReactiveForm.get('DateOfBirth').valid
+          "
+        >
           Create a Username
         </button>
       </div>
@@ -121,16 +134,42 @@
       </div>
     </div>
 
-    <div class="input-box address">
-      <label>Address</label>
-      <input
-        type="text"
-        placeholder="Street address"
-        formControlName="Street"
-      />
+    <div class="input-box address" formGroupName="Address">
+      <div class="input-box">
+        <input
+          type="text"
+          placeholder="Street address"
+          class="form-control"
+          [ngClass]="{
+            'is-invalid':
+              ReactiveForm.get('Address.Street').invalid &&
+              ReactiveForm.get('Address.Street').touched,
+            isValidInput: ReactiveForm.get('Address.Street').valid
+          }"
+          formControlName="Street"
+        />
+        <small
+          *ngIf="
+            ReactiveForm.get('Address.Street').invalid &&
+            ReactiveForm.get('Address.Street').touched
+          "
+          >Street Required</small
+        >
+      </div>
+
       <div class="column">
-        <div class="select-box">
-          <select name="Country" formControlName="Country" multiple>
+        <div class="select-box w-50">
+          <select
+            name="Country"
+            formControlName="Country"
+            multiple
+            class="form-control"
+            [ngClass]="{
+              'is-invalid':
+                ReactiveForm.get('Address.Country').invalid &&
+                ReactiveForm.get('Address.Country').touched,
+            }"
+          >
             <option
               *ngFor="let country of ['America', 'Japan', 'India', 'Nepal']"
               [value]="country"
@@ -138,23 +177,175 @@
               {{ country }}
             </option>
           </select>
+
+          <small
+            *ngIf="
+              ReactiveForm.get('Address.Country').invalid &&
+              ReactiveForm.get('Address.Country').touched
+            "
+            >Country Required</small
+          >
         </div>
-        <input type="text" placeholder="City" formControlName="City" />
+        <div class="w-50">
+          <input
+            type="text"
+            placeholder="City"
+            class="form-control"
+            formControlName="City"
+            [ngClass]="{
+              'is-invalid':
+                ReactiveForm.get('Address.City').invalid &&
+                ReactiveForm.get('Address.City').touched,
+              isValidInput: ReactiveForm.get('Address.City').valid
+            }"
+          />
+
+          <small
+            *ngIf="
+              ReactiveForm.get('Address.City').invalid &&
+              ReactiveForm.get('Address.City').touched
+            "
+            >City Required</small
+          >
+        </div>
       </div>
+
       <div class="column">
-        <input type="text" placeholder="Region" formControlName="Region" />
-        <input type="number" placeholder="Postal code" formControlName="Code" />
+        <div class="w-50">
+          <input
+            type="text"
+            placeholder="Region"
+            class="form-control"
+            formControlName="Region"
+            [ngClass]="{
+              'is-invalid':
+                ReactiveForm.get('Address.Region').invalid &&
+                ReactiveForm.get('Address.Region').touched,
+              isValidInput: ReactiveForm.get('Address.Region').valid
+            }"
+          />
+          <small
+            *ngIf="
+              ReactiveForm.get('Address.Region').invalid &&
+              ReactiveForm.get('Address.Region').touched
+            "
+            >Region Required</small
+          >
+        </div>
+        <div class="w-50">
+          <input
+            type="number"
+            placeholder="Postal code"
+            formControlName="Code"
+            class="form-control"
+            [ngClass]="{
+              'is-invalid':
+                ReactiveForm.get('Address.Code').invalid &&
+                ReactiveForm.get('Address.Code').touched,
+              isValidInput: ReactiveForm.get('Address.Code').valid
+            }"
+          />
+          <small
+            *ngIf="
+              ReactiveForm.get('Address.Code').invalid &&
+              ReactiveForm.get('Address.Code').touched
+            "
+            >Code Required</small
+          >
+        </div>
       </div>
     </div>
-    <div class="d-flex justify-content-center mt-4">
-      <button
-        [disabled]="ReactiveForm.invalid"
-        type="submit"
-        class="btn btn-danger w-50"
+
+    <div class="input-box" formArrayName="Skills">
+      <div
+        class="column mb-2"
+        *ngFor="
+          let Skill of ReactiveForm.get('Skills')['controls'];
+          let i = index
+        "
       >
-        Submit
+        <input
+          type="text"
+          placeholder="Add Skill"
+          class="form-control"
+          formControlName="{{ i }}"
+          [ngClass]="{
+            'is-invalid': Skill.invalid && Skill.touched,
+            isValidInput: Skill.valid
+          }"
+        />
+        <button
+          type="button"
+          class="btn btn-danger"
+          (click)="RemoveControl(i, 'Skills')"
+        >
+          Remove
+        </button>
+      </div>
+    </div>
+    <button type="button" class="btn btn-primary mt-2" (click)="AddSkills()">
+      Add New Skill
+    </button>
+
+    <div
+      class="input-box experience"
+      formArrayName="Experience"
+      *ngFor="
+        let experience of ReactiveForm.get('Experience')['controls'];
+        let i = index
+      "
+    >
+      <div [formGroupName]="i">
+        <div class="experience">
+          <label>Experience {{ i + 1 }}</label>
+          <input
+            type="text"
+            placeholder="Company Name"
+            formControlName="Company"
+          />
+          <div class="column">
+            <div class="select-box">
+              <select formControlName="Position">
+                <option selected disabled value="null">Position</option>
+                <option>Junior Developer</option>
+                <option>Software Developer</option>
+                <option>Senior Developer</option>
+                <option>Team Lead</option>
+              </select>
+            </div>
+            <input
+              type="number"
+              placeholder="Experience"
+              formControlName="Exp"
+            />
+          </div>
+          <div class="column">
+            <input
+              type="date"
+              placeholder="Start Date"
+              formControlName="Start"
+            />
+            <input type="date" placeholder="End Date" formControlName="End" />
+          </div>
+          <button
+            type="button"
+            class="btn-add-delete"
+            (click)="RemoveControl(i, 'Experience')"
+          >
+            Delete Experience
+          </button>
+        </div>
+      </div>
+    </div>
+    <div>
+      <button type="button" class="btn-add-delete" (click)="AddExperience()">
+        Add Experience
       </button>
     </div>
+    <div class="d-flex justify-content-center mt-4">
+      <button type="submit" class="btn btn-danger w-50">Submit</button>
+    </div>
+
     <!--HTML for Skills Form Array -->
     <!-- <div class="input-box skills" formArrayName="skills">
       <h4>Add Skills</h4>

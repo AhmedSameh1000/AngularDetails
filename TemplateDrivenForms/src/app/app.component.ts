@@ -1,4 +1,4 @@
-import { ViewChild } from '@angular/core';
+import { OnInit, ViewChild } from '@angular/core';
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
